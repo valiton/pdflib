@@ -7,6 +7,10 @@ use PDFlibException;
 
 class PdfLibAdapter
 {
+    const PDFLIB_VERSION_MIN_SUPPORTED = '9';
+
+    const PDFLIB_VERSION_NEXT_INCOMPAT = '10';
+
     /**
      * The PDFlib instance.
      *
@@ -23,6 +27,23 @@ class PdfLibAdapter
     public function __construct(PDFlib $lib, $licenseKey = '0')
     {
         $this->lib = $lib;
+
+        // getString() is bugged
+        $version = join('.', [
+            $this->getOption('major'),
+            $this->getOption('minor'),
+            $this->getOption('revision'),
+        ]);
+
+        if (
+          version_compare($version, static::PDFLIB_VERSION_MIN_SUPPORTED, '<') ||
+          version_compare($version, static::PDFLIB_VERSION_NEXT_INCOMPAT, '>=')
+        ) {
+            trigger_error(
+              'Your pdflib version might be unsupported',
+              E_USER_WARNING
+            );
+        }
 
         $this->setOption('errorPolicy', 'exception');
         $this->setOption('stringFormat', 'utf8');
@@ -182,9 +203,9 @@ class PdfLibAdapter
     }
 
     /**
-     * Wrapper for PDFlib::open_pdi_document.
+     * Wrapper for PDFlib::open_pdi_page.
      *
-     * @param $filename
+     * @param string $filename
      * @param array $options
      * @return int
      */
