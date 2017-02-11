@@ -53,4 +53,65 @@ class PdfLibTetAdapter
         throw new TETException($this->lib->get_errmsg(), $this->lib->get_errnum());
     }
 
+    /**
+     * Wrapper for PDFlib::open_pdi_page.
+     *
+     * @param Handleable|int $document
+     * @param int $page
+     * @param array $options
+     * @return int
+     */
+    public function openPage($document, $page, $options = [])
+    {
+        return $this->lib->open_page($this->getHandleFrom($document), $page, $this->createOptionList($options));
+    }
+
+    /**
+     * Wrapper for TET::pcos_get_number.
+     *
+     * @param Handleable|int $document
+     * @param string $path
+     * @return float
+     */
+    public function pcosGetNumber($document, $path)
+    {
+        return $this->lib->pcos_get_number($this->getHandleFrom($document), $path);
+    }
+
+    /**
+     * Wrapper for TET::pcos_get_string.
+     *
+     * @param Handleable|int $document
+     * @param string $path
+     * @return string
+     */
+    public function pcosGetString($document, $path)
+    {
+        return $this->lib->pcos_get_string($this->getHandleFrom($document), $path);
+    }
+
+    /**
+     * Wrapper for TET::pcos_get_stream.
+     *
+     * @param Handleable|int $document
+     * @param string $path
+     * @param array $options
+     * @return string
+     */
+    public function pcosGetStream($document, $path, $options = [])
+    {
+        return $this->lib->pcos_get_stream($this->getHandleFrom($document), $this->createOptionList($options), $path);
+    }
+
+    /**
+     * Get the PDFlib handle.
+     *
+     * @param Handleable|int $source
+     * @return int
+     */
+    protected function getHandleFrom($source)
+    {
+        return ($source instanceof Handleable) ? $source->getHandle() : $source;
+    }
+
 }
