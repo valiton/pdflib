@@ -876,4 +876,13 @@ class PdfLibAdapter
     {
         return $this->lib->get_buffer();
     }
+
+    /**
+     * @return \PDFlib
+     */
+    public function getLib()
+    {
+        return $this->lib;
+    }
+
 }
