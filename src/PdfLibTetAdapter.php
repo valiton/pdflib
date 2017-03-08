@@ -114,4 +114,12 @@ class PdfLibTetAdapter
         return ($source instanceof Handleable) ? $source->getHandle() : $source;
     }
 
+    /**
+     * @return \TET
+     */
+    public function getLib()
+    {
+        return $this->lib;
+    }
+
 }
