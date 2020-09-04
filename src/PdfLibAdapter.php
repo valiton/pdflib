@@ -40,9 +40,10 @@ class PdfLibAdapter
     /**
      * Create a new adapter instance.
      *
-     * @param PDFlib|null $lib
+     * @param PDFlib $lib
+     * @param string $licenseKey
      */
-    public function __construct(PDFlib $lib = null)
+    public function __construct(PDFlib $lib, $licenseKey = '0')
     {
         $this->lib = $lib ?: new PDFlib;
 
